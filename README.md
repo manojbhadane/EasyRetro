@@ -28,7 +28,7 @@ allprojects
 ```
 dependencies 
 {
-	  implementation 'com.github.manojbhadane:QButton:v1.3'
+ 	implementation 'com.github.manojbhadane:EasyRetro:v1.0'
 }
 ```
 
