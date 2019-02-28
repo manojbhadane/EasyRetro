@@ -1,5 +1,11 @@
 # EasyRetro
 
+An Easy to use retrofit based network/api call extention for android
+
+1. No need to check internet connection before api call
+2. Easy to use
+3. Minimal configuration
+4. More readble
 
 ### Specs
 <!---[![](https://jitpack.io/v/manojbhadane/QButton.svg)](https://jitpack.io/#manojbhadane/QButton)-->
