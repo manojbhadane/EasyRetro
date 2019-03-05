@@ -1,4 +1,4 @@
-# EasyRetro
+# EasyRetro [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?url=https://github.com/manojbhadane/EasyRetro)
 
 An Easy to use retrofit based network/api call extention for android
 
