@@ -46,6 +46,16 @@ dependencies
  EasyRetro.init(getApplicationContext(),"BASE_URL");
 ```
 
+## Interfaces
+```
+public interface ApiService {
+
+    @GET
+    public Call<ResModel> test(@Url String url);
+
+}
+```
+
 ## In Activity
 ```
 ApiService apiService = EasyRetro.setServices(ApiService.class);
