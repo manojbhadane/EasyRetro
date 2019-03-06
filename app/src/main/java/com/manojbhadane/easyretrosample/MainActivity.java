@@ -34,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
      * 3. Easy to Use
      * 4. Minimal configuration
      *
+     *
+     *  * Version Commit guide on Jitpack , execute follwing commands
+     *  * <p>
+     *  * git tag -a v1.0 -m "first commit"
+     *  * git push origin v1.2
+     *  *
+     *
      */
 
     private void callAPI() {
