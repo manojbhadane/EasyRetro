@@ -12,6 +12,7 @@ import retrofit2.Response;
 public class MakeRequest<T> {
 
     private static MakeRequest mInstance;
+    private String mErrorWentWrong = "Something went wrong";
 
     private MakeRequest() {
     }
@@ -48,11 +49,11 @@ public class MakeRequest<T> {
                                 T model = (T) response.body();
                                 listener.onResponse(model, response);
                             } else {
-                                listener.onError("something went wrong", response);
+                                listener.onError(mErrorWentWrong, response);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            listener.onError("something went wrong", null);
+                            listener.onError(mErrorWentWrong, null);
                         }
                     }
 
@@ -62,10 +63,10 @@ public class MakeRequest<T> {
                             printLog("onFailure : Message : " + t.getMessage());
                             printLog("onFailure : Cause : " + t.getCause());
                             printLog("onFailure : StackTrace : " + t.getStackTrace());
-                            listener.onError("something went wrong", null);
+                            listener.onError(mErrorWentWrong, null);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            listener.onError("something went wrong", null);
+                            listener.onError(mErrorWentWrong, null);
                         }
                     }
                 });
@@ -74,7 +75,7 @@ public class MakeRequest<T> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            listener.onError("something went wrong", null);
+            listener.onError(mErrorWentWrong, null);
         }
     }
 
@@ -99,11 +100,11 @@ public class MakeRequest<T> {
                             if (response.isSuccessful()) {
                                 listener.onResponse(new JSONObject(response.body().string()), response);
                             } else {
-                                listener.onError("something went wrong", response);
+                                listener.onError(mErrorWentWrong, response);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
-                            listener.onError("something went wrong", null);
+                            listener.onError(mErrorWentWrong, null);
                         }
                     }
 
@@ -113,10 +114,10 @@ public class MakeRequest<T> {
                             printLog("onFailure : Message : " + t.getMessage());
                             printLog("onFailure : Cause : " + t.getCause());
                             printLog("onFailure : StackTrace : " + t.getStackTrace());
-                            listener.onError("something went wrong", null);
+                            listener.onError(mErrorWentWrong, null);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            listener.onError("something went wrong", null);
+                            listener.onError(mErrorWentWrong, null);
                         }
                     }
                 });
@@ -125,7 +126,7 @@ public class MakeRequest<T> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            listener.onError("something went wrong", null);
+            listener.onError(mErrorWentWrong, null);
         }
     }
 }
