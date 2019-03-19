@@ -4,6 +4,11 @@ import android.content.Context;
 
 import retrofit2.Call;
 
+//Version Commit guide on Jitpack , execute follwing commands
+//
+//git tag -a v1.0 -m "first commit"
+//git push origin v1.2
+
 public class EasyRetro {
 
     private static Context mContext;
