@@ -34,9 +34,12 @@ allprojects
 ```
 dependencies 
 {
- 	implementation 'com.github.manojbhadane:EasyRetro:v1.1'
+ 	implementation 'com.github.manojbhadane:EasyRetro:v1.2'
 }
 ```
+
+# v1.2 
+* RxJava support added
 
 # Usage
 
