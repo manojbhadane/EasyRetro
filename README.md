@@ -38,8 +38,11 @@ dependencies
 }
 ```
 
-# v1.2 
-* RxJava support added
+### Versions
+
+| Version | Description |
+| --- | --- |
+| v1.2 | RxJava support added|
 
 # Usage
 
