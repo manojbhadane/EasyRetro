@@ -18,6 +18,10 @@ public class EasyRetro {
         RetrofitInstance.init(baseUrl);
     }
 
+    public static Context getContext(){
+        return mContext;
+    }
+
     public static <T> T setServices(final Class<T> service) {
         return RetrofitInstance.getInstance().create(service);
     }
