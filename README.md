@@ -34,7 +34,7 @@ allprojects
 ```
 dependencies 
 {
- 	implementation 'com.github.manojbhadane:EasyRetro:v1.2'
+ 	implementation 'com.github.manojbhadane:EasyRetro:v1.3'
 }
 ```
 
