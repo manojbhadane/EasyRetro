@@ -9,6 +9,8 @@ import retrofit2.Call;
 //git tag -a v1.0 -m "first commit"
 //git push origin v1.2
 
+//Visit https://jitpack.io to build library
+
 public class EasyRetro {
 
     public static void init(Context context, String baseUrl) {
