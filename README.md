@@ -34,7 +34,7 @@ allprojects
 ```
 dependencies 
 {
- 	implementation 'com.github.manojbhadane:EasyRetro:v1.2'
+ 	implementation 'com.github.manojbhadane:EasyRetro:v2.1'
 }
 ```
 
@@ -42,7 +42,10 @@ dependencies
 
 | Version | Description |
 | --- | --- |
-| v1.2 | RxJava support added|
+| v2.1 | Library upgraded to latest gradle and retrofit version |
+|  | Gradle : 7.1.3 |
+|  | Retrofit : 2.9.0 |
+|  | Retrofit : 2.9.0 |
 
 # Usage
 
