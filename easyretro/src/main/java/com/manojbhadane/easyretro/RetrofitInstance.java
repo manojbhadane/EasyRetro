@@ -1,11 +1,16 @@
 package com.manojbhadane.easyretro;
 
+import android.content.Context;
+
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
+import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -16,8 +21,13 @@ public class RetrofitInstance {
     private static String BASE_URL;
     private static Retrofit retrofit;
 
-    private static int cacheSize = 10 * 1024 * 1024; // 10 MB
+    private static Cache cache;
 
+    public static void initCache(Context context){
+        // 10 MB
+        int cacheSize = 10 * 1024 * 1024;
+        cache = new Cache(context.getCacheDir(), cacheSize);
+    }
     public static void init(String baseURL) {
         BASE_URL = baseURL;
         getInstance();
@@ -25,15 +35,12 @@ public class RetrofitInstance {
 
     public static Retrofit getInstance() {
         if (retrofit == null) {
-
-            Cache cache = new Cache(EasyRetro.getContext().getCacheDir(), cacheSize);
-
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(interceptor)
-                    .addInterceptor(offlineInterceptor)
-                    .addNetworkInterceptor(onlineInterceptor)
+                    .addInterceptor(offlineInterceptor())
+                    .addNetworkInterceptor(onlineInterceptor())
                     .cache(cache)
                     .build();
 
@@ -47,40 +54,50 @@ public class RetrofitInstance {
         return retrofit;
     }
 
-//    public static ApiService getService() {
-//        return getInstance().create(ApiService.class);
-//    }
-
     public static <T> T getService(final Class<T> service) {
         return getInstance().create(service);
     }
 
-    static Interceptor onlineInterceptor = new Interceptor() {
-        @Override
-        public okhttp3.Response intercept(Chain chain) throws IOException {
-            okhttp3.Response response = chain.proceed(chain.request());
-            int maxAge = 60*5; // read from cache for 300(5 min.) seconds even if there is internet connection
-            return response.newBuilder()
-                    .header("Cache-Control", "public, max-age=" + maxAge)
-                    .removeHeader("Pragma")
-                    .build();
-        }
-    };
-
-    static Interceptor offlineInterceptor = new Interceptor() {
-        @Override
-        public okhttp3.Response intercept(Chain chain) throws IOException {
+    private static Interceptor onlineInterceptor() {
+        return chain -> {
             Request request = chain.request();
-            if (NetworkManager.getInstance().isConnectingToInternet(EasyRetro.getContext())) {
-                int maxStale = 60 * 60 * 24 * 1; // Offline cache available for 1 days
-                request = request.newBuilder()
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                        .removeHeader("Pragma")
+            Response originalResponse = chain.proceed(request);
+            String cacheControl = originalResponse.header("Cache-Control");
+
+            if (cacheControl == null || cacheControl.contains("no-store") || cacheControl.contains("no-cache") ||
+                    cacheControl.contains("must-revalidate") || cacheControl.contains("max-stale=0")) {
+
+                CacheControl cc = new CacheControl.Builder()
+                        .maxStale(1, TimeUnit.DAYS)
                         .build();
+
+                request = request.newBuilder()
+                        .cacheControl(cc)
+                        .build();
+
+                return chain.proceed(request);
+
+            } else {
+                return originalResponse;
             }
-            return chain.proceed(request);
-        }
-    };
+        };
+    }
 
+    private static Interceptor offlineInterceptor() {
+        return chain -> {
+            try {
+                return chain.proceed(chain.request());
+            } catch (Exception e) {
+                CacheControl cacheControl = new CacheControl.Builder()
+                        .onlyIfCached()
+                        .maxStale(1, TimeUnit.DAYS)
+                        .build();
 
+                Request offlineRequest = chain.request().newBuilder()
+                        .cacheControl(cacheControl)
+                        .build();
+                return chain.proceed(offlineRequest);
+            }
+        };
+    }
 }

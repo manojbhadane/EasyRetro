@@ -9,10 +9,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@SuppressWarnings("unchecked")
 public class MakeRequest<T> {
 
     private static MakeRequest mInstance;
-    private String mErrorWentWrong = "Something went wrong";
+    private final String mErrorWentWrong = "Something went wrong";
 
     private MakeRequest() {
     }
@@ -39,7 +40,8 @@ public class MakeRequest<T> {
     public <T> void request(Call call, boolean isInternet, final ResponseListener<T> listener) {
         try {
             if (isInternet) {
-                printLog("Request Url : " + call.request().url().toString());
+                printLog("Request Url : " + call.request().url());
+                //noinspection unchecked
                 call.enqueue(new Callback<T>() {
                     @Override
                     public void onResponse(Call<T> call, Response<T> response) {
@@ -89,7 +91,7 @@ public class MakeRequest<T> {
 
         try {
             if (isInternet) {
-                printLog("Request Url : " + call.request().url().toString());
+                printLog("Request Url : " + call.request().url());
 
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
